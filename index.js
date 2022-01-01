@@ -18,9 +18,17 @@ async function run(){
         const productCollections = database.collection('products')
         const orderCollections = database.collection('orders')
 
+        // get all products
         app.get('/products', async (req,res)=>{
             const products = await productCollections.find({}).toArray()
             res.send(products)
+        })
+        // get an user order
+        app.get('/orders/:email', async(req,res)=>{
+            const userEmail = req.params.email;
+            const query = {email: userEmail}
+            const result = await orderCollections.find(query).toArray()
+            res.send(result)
         })
     }finally{
         await client.close()
